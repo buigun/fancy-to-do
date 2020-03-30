@@ -56,6 +56,61 @@ class ToDoController{
             res.status(500).json(err)
         })
     }
+
+    static updateTodo(req,res) {
+        const {title,description,status,due_date} = req.body
+        Todo.update({
+            title,
+            description,
+            status,
+            due_date
+        },{where: {id: req.params.id}})
+        .then(todo=>{
+            if (todo) {
+                return Todo.findByPk(req.params.id)
+            } else {
+                res.status(404).json({
+                    message: 'To Do not found'
+                })
+            }
+        })
+        .then(hasil=>{
+            res.status(200).json({hasil})
+        })
+        .catch(err=>{
+            if (err.name === 'SequelizeValidationError') {
+                let msgArr = []
+
+                err.errors.forEach(el => {
+                    msgArr.push(el.message)
+                });
+
+                res.status(400).json({
+                    message: msgArr.join(', ')
+                })
+            } else {
+                res.status(500).json(err)
+            }
+        })
+    }
+
+    static destroyTodo(req,res) {
+        Promise.all([Todo.findByPk(req.params.id),Todo.destroy({where: {id: req.params.id}})])
+        .then(values=>{
+            const deleted = values[0]
+
+            if(deleted) {
+                res.status(200).json({deleted})
+            } else {
+                res.status(404).json({
+                    message: 'To Do not found'
+                })
+            }
+        })
+        .catch(err=>{
+            res.status(500).json(err)
+        })
+    }
 }
 
 module.exports = ToDoController
