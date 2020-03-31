@@ -8,7 +8,8 @@ class ToDoController{
             title,
             description,
             status,
-            due_date
+            due_date,
+            UserId : req.user.id
         })
         .then(todo=>{
             res.status(201).json({todo})
@@ -63,7 +64,8 @@ class ToDoController{
             title,
             description,
             status,
-            due_date
+            due_date,
+            UserId: req.user.id
         },{where: {id: req.params.id}})
         .then(todo=>{
             if (todo) {

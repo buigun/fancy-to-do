@@ -4,14 +4,9 @@ const {hash,compare} = require('../helpers/bcrypt')
 
 class UserController {
     static register(req,res) {
-        const {email,password,username,role} = req.body
-        
-        const newUser = {
-            email,username,role,
-            password : hash(password)
-        }
+        const {email,password,username} = req.body
 
-        User.create(newUser)
+        User.create({email,password,username})
         .then(user=>{
             res.status(201).json(user)
         })
@@ -27,14 +22,20 @@ class UserController {
         })
         .then(user=>{
             if (!user) {
-                res.status(401).json({message: 'email/password wrong'})
+                res.status(401).json({message: 'email wrong'})
             } else {
                 if (!compare(password,user.password)) {
-                    res.status(401).json({message: 'email/password wrong'})
+                    res.status(401).json({message: 'password wrong'})
                 } else {
-                    
+                    const token = jwt.sign({
+                        id: user.id
+                    },'rahasia')
+                    res.status(200).json(token)
                 }
             }
+        })
+        .catch(err=>{
+            res.status(500).json({message: err.message})
         })
     }
 }
