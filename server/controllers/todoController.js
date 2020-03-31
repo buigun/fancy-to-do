@@ -32,7 +32,12 @@ class ToDoController{
     }
 
     static getToDos(req,res) {
-        Todo.findAll()
+        Todo.findAll({
+            where: {
+              UserId: req.user.id
+            },
+            order: [['id', 'ASC']]
+          })
         .then(todos=>{
             console.log(todos,'ini todos')
             res.status(200).json({todos})

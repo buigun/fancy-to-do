@@ -1,3 +1,4 @@
+require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
 const authentication = function(req,res,next) {
@@ -8,7 +9,7 @@ const authentication = function(req,res,next) {
                 message: 'You must log in to access this endpoint'
             })
         } else {
-            const decoded = jwt.verify(token,'rahasia')
+            const decoded = jwt.verify(token,process.env.JWT_SECRET)
             req.user = decoded
             next()
         }

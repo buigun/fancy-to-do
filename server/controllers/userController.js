@@ -1,3 +1,4 @@
+require('dotenv').config()
 const {User} = require('../models')
 const jwt = require('jsonwebtoken')
 const {hash,compare} = require('../helpers/bcrypt')
@@ -29,7 +30,7 @@ class UserController {
                 } else {
                     const token = jwt.sign({
                         id: user.id
-                    },'rahasia')
+                    },process.env.JWT_SECRET)
                     res.status(200).json(token)
                 }
             }
