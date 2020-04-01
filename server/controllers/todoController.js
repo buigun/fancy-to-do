@@ -102,17 +102,20 @@ class ToDoController{
     }
 
     static destroyTodo(req,res) {
-        Promise.all([Todo.findByPk(req.params.id),Todo.destroy({where: {id: req.params.id}})])
-        .then(values=>{
-            const deleted = values[0]
-
+        // Promise.all([Todo.findByPk(req.params.id),Todo.destroy({where: {id: req.params.id}})])
+        Todo.findByPk(req.params.id)
+        .then(deleted=>{
             if(deleted) {
                 res.status(200).json({deleted})
+                return Todo.destroy({where: {id: deleted.id}})
             } else {
                 res.status(404).json({
                     message: 'To Do not found'
                 })
             }
+        })
+        .then(result=>{
+            res.status(200).json({message:'todo deleted'})
         })
         .catch(err=>{
             res.status(500).json(err)
