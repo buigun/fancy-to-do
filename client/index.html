@@ -27,15 +27,15 @@
     <div id="loginRegister" class="container">
         <div class="row mb-3 mt-3">
             <div class="form-group col-md-6">
-                <h2>Fancy To-Do</h2>
+                <h2>Fancy ToDo</h2>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-6" id="login">
                 <h3>Login</h3>
-                <form method="POST" id="form-login-regular">
-                    <p>Username:</p>
-                    <input type="text" class="form-control" name="email">
+                <form method="POST" id="login">
+                    <p>Email:</p>
+                    <input type="text" class="form-control" id="emailLogin">
                     <p>Password:</p>
-                    <input type="password" class="form-control" name="password">
+                    <input type="password" class="form-control" id="passwordLogin">
                     <br>
                     <input type="submit" class="btn btn-primary" value="Login">
                     <button type="button" class="btn btn-primary" data-toggle="modal"
@@ -53,16 +53,16 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" id="form-signup">
+                        <form method="POST" id="register">
                             <p>Username:</p>
-                            <input type="text" name="username" class="form-control" placeholder="e.g. budigunawan">
+                            <input type="text" id="usernameRegister" class="form-control" placeholder="e.g. budigunawan">
                             <p>Email:</p>
-                            <input type="text" name="email" class="form-control"
+                            <input type="text" id="emailRegister" class="form-control"
                                 placeholder="e.g. budi.gunawan@mail.com">
                             <p>Password:</p>
-                            <input type="password" name="password" class="form-control">
+                            <input type="password" id="passwordRegister" class="form-control">
                             <br>
-                            <input type="submit" class="btn btn-primary" value="Register">
+                            <input type="submit" class="btn btn-primary"  value="Register">
                         </form>
                     </div>
                 </div>
@@ -70,28 +70,141 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="/">Fancy Todo</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/">Home</a>
-          </li>
-        </ul>
-        <span class="navbar-text mr-5">
-          <div id="name"></div>
-        </span>
-        <span class="navbar-text">
-          <a href="/" onclick="signOut()"><button class="btn btn-primary">Sign out</button></a>
-        </span>
-      </div>
-    </nav>
+    <div id="main">
+        <!-- navigation -->
+        <div class="navigation">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#" style="font-weight: 200;">FANCY TODO</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-    <script src="user.js"></script>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="addButton" data-toggle="modal" data-target="#addModal"><i
+                                    class="fas fa-plus" style="margin-right: 5px;"></i>Add Task</a>
+                        </li>
+                    </ul>
+                    <a href="#" onclick="signOut();" class="signOut btn btn btn-outline-secondary btn-sm mr-4"> <i
+                            class="fas fa-sign-out-alt"></i>Logout</a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="add">
+            <h5 class="titleBar">MY TODO LIST</h5>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Todo</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Due Date</th>
+                        <th scope="col">Language</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+
+            <!-- Modal Add -->
+            <div class="modal fade" id="addModal" data-backdrop="static" tabindex="-1" role="dialog"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Add New Task</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <form method="POST" id="addTodo">
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" id="title">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <input type="text" class="form-control" id="description">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select class="form-control" id="status">
+                                        <option value="false">Unfinish</option>
+                                        <option value="true">Finish</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Due Date</label>
+                                    <input type="date" class="form-control" id="duedate">
+                                </div>
+
+                                <button type="submit" class="btn btn-outline-info">Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="updateModal" data-backdrop="static" tabindex="-1" role="dialog"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Update</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form method="POST" id="updateTodo">
+                            <input type="hidden" id="edit_id">
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control" id="titleUpdate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <input type="text" class="form-control" id="descriptionUpdate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="form-control" id="statusUpdate">
+                                    <option value="false">Unfinish</option>
+                                    <option value="true">Finished</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Due Date</label>
+                                <input type="date" class="form-control" id="duedateUpdate">
+                            </div>
+                            <button type="submit" class="btn btn-outline-info">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="main.js"></script>
 </body>
 
 </html>
