@@ -51,7 +51,7 @@ function showAll() {
         for (let i = 0; i < todos.length; i++) {
             $('#tbody').append(
                 `<tr>
-                    <td class = "id">${todos[i].id}</td>
+                    <td class = "id">${i+1}</td>
                     <td class = "title">${todos[i].title}</td>
                     <td class = "description">${todos[i].description}</td>
                     <td class = "status">${todos[i].status}</td>
@@ -101,20 +101,33 @@ $('#login').submit(function(e){
     })
 })
 
+///sign in Google
+function onSignIn(googleUser) {
+    let id_token = googleUser.getAuthResponse().id_token
+
+    $.ajax({
+        method: 'POST',
+        url: `http://localhost:3000/login/google`,
+        data: { id_token }
+      })
+    .done(token => {
+        localStorage.setItem('token', token)
+        showAll()
+    })
+    .fail(function (result) {
+        console.log(result)
+    })
+}
+
 ///sign out
 function signOut() {
-    // var auth2 = gapi.auth2.getAuthInstance();
-    // auth2.signOut().then(function () {
-    //   console.log('User signed out.');
-    //   localStorage.removeItem('token')
-    //   $navbar.hide()
-    //   $registerForm.show()
-    //   $tableTodo.hide()
-    // })
-    localStorage.removeItem('token')
-    console.log('User signed out.');
-    $('#loginRegister').show()
-    $('#main').hide()
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+      localStorage.removeItem('token');
+      $('#loginRegister').show()
+      $('#main').hide()
+    })
 }
 
 ///add new Todo list
