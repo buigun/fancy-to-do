@@ -41,7 +41,7 @@ class UserController {
         })
     }
 
-    static googleSignIn(req,res,next) {
+    static googleSignIn(req,res) {
         let user = null
 
         const client = new OAuth2Client(process.env.CLIENT_ID);
@@ -78,7 +78,7 @@ class UserController {
             res.status(200).json(token)
           })
           .catch(err => {
-            next(err)
+            res.status(500).json({message: err.message})
           })
     }
 }
