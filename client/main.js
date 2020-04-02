@@ -32,6 +32,7 @@ $('#register').submit(function(e){
     })
     .fail(function(err){
         console.log(err)
+        swal("Error!", err.responseJSON.message, "error");
     })
 })
 
@@ -98,6 +99,7 @@ $('#login').submit(function(e){
     })
     .fail(function(err){
         console.log(err)
+        swal("Error!", err.responseJSON.message, "error");
     })
 })
 
@@ -155,6 +157,7 @@ $('#addTodo').submit(function(e){
     })
     .fail(function(err){
         console.log(err)
+        swal("Error!", err.responseJSON.message, "error");
     })
 })
 
@@ -165,7 +168,7 @@ function update(id){
         let title = $('#titleUpdate').val()
         let description = $('#descriptionUpdate').val()
         let status = $('#statusUpdate').val()
-        let due_date = $('duedateUpdate').val()
+        let due_date = $('#duedateUpdate').val()
     
         const todo = {
             title,description,status,due_date
@@ -223,7 +226,7 @@ $(this).click(function (e) {
                 $('#statusUpdate').val('false')
             }
             
-            $('#duedateUpdate').val(data.hasil.due_date)
+            $('#duedateUpdate').val(data.hasil.due_date.split('T')[0])
 
             update(data.hasil.id)
         })
