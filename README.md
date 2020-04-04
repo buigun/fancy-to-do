@@ -11,6 +11,7 @@ This app is created using :
 This app has :
 * RESTful endpoint for todo's CRUD operation
 * JSON formatted response
+* detectlanguage API
 
 
 ## REST Endpoints Table:
@@ -22,6 +23,9 @@ Route | Method | Request(s) | Response(s) | Description
 `/todos/:id` | GET | **Headers**<br>token:`String`<br>**Body**<br> not needed  | **Success**<br>`200` Todo displayed<br>**Fail**<br>`404` Todo not found<br>`500` Internal Server Error | Get one todo
 `/todos/:id` | PUT | **Headers**<br>token: `String`<br>**Body**<br>title: `String`<br>description: `String`<br>status: `Boolean`<br>dueDate: `Date` | **Success**<br>`200` Edited todo displayed<br>**Fail**<br>`404` Todo not found<br>`400` Validation error messages<br>`500` Internal Server Error | Update one todo
 `/todos/:id` | DELETE | **Headers**<br>token:`String`<br>**Body**<br> not needed  | **Success**<br>`200` Deleted todo displayed<br>**Fail**<br>`404` Todo not found<br>`500` Internal Server Error | Delete a todo
+`/register` | POST | **Body**<br>email: `String`<br>password: `String`<br>username: `String` | **Success**<br>`201` New user created<br>**Fail**<br>`400` Validation error messages<br>`500` Internal Server Error | Register user
+`/login` | POST | **Body**<br>email: `String`<br>password: `String` | **Success**<br>`200` Get token for user<br>**Fail**<br>`401` Validation error messages<br>`500` Internal Server Error | Login user
+
 
 ### GET /todos
 > Get all Todos
@@ -229,6 +233,77 @@ _Response (404 - NOT FOUND)_
 }
 ```
 
+### POST /register
+> Register new user
+
+_Request Header_
+```
+{
+  not needed
+}
+```
+
+_Request Body_
+```
+{
+  "email": "johndoe@mail.com",
+  "password": "userpassword",
+  "username": "John Doe"
+}
+```
+
+_Response (201 - CREATED)_
+```
+{
+    "id": 13,
+    "email": "johndoe@mail.com",
+    "password": "$2a$10$sZgmpxQxqU/IUxnXkpZ0H.qLW1LcekI3ZUpBVSMUDLjDlz4Q9OTwS",
+    "username": "John Doe",
+    "updatedAt": "2020-04-04T09:55:16.638Z",
+    "createdAt": "2020-04-04T09:55:16.638Z"
+}
+
+```
+
+_Response (400 - BAD REQUEST)_
+```
+{
+    "message": "username must be filled"
+}
+```
+
+### POST /login
+> User login
+
+_Request Header_
+```
+{
+  not needed
+}
+```
+
+_Request Body_
+```
+{
+  "email": "johndoe@mail.com",
+  "password": "userpassword"
+}
+```
+
+_Response (200 - OK)_
+```
+{
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTU4NTk5NDI1OH0.WPcL_jnyFKPJf_kEvp1YWWvUmXb1SGgldVB8epC02Mo"
+}
+
+```
+
+_Response (400 - BAD REQUEST)_
+```
+{
+"message": "wrong password"
+}
+```
 
 
 
