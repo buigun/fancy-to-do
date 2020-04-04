@@ -221,7 +221,7 @@ $(this).click(function (e) {
         showAll()
       })
       .fail(function(err){
-        showAll()
+        console.log(err)
       })
 
     }
