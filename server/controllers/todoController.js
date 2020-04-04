@@ -22,7 +22,7 @@ class ToDoController{
             where: {
               UserId: req.user.id
             },
-            order: [['id', 'ASC']]
+            order: [['due_date', 'ASC']]
           })
         .then(todos=>{
             console.log(todos,'ini todos')
