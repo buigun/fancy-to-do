@@ -1,10 +1,12 @@
-if(!localStorage.getItem("token")) {
-    $('#loginRegister').show()
-    $('#main').hide()
-} else {
-    $('#loginRegister').hide()
-    $('#main').show()
-}
+$(document).ready(function(){
+    if(!localStorage.getItem("token")) {
+        $('#loginRegister').show()
+        $('#main').hide()
+    } else {
+        $('#loginRegister').hide()
+        $('#main').show()
+    }
+})
 
 ///register new user
 $('#register').submit(function(e){
