@@ -5,6 +5,7 @@ $(document).ready(function(){
     } else {
         $('#loginRegister').hide()
         $('#main').show()
+        showAll()
     }
 })
 
@@ -52,12 +53,20 @@ function showAll() {
         
         $('#tbody').empty()
         for (let i = 0; i < todos.length; i++) {
+            let statusCetak = ''
+            
+            if (todos[i].status === true) {
+                statusCetak = 'finished'
+            } else {
+                statusCetak = 'unfinished'
+            }
+
             $('#tbody').append(
                 `<tr>
                     <td class = "id">${i+1}</td>
                     <td class = "title">${todos[i].title}</td>
                     <td class = "description">${todos[i].description}</td>
-                    <td class = "status">${todos[i].status}</td>
+                    <td class = "status">${statusCetak}</td>
                     <td class = "due_date">${todos[i].due_date.split('T')[0]}</td>
                     <td class = "language">${todos[i].language}</td>
                     <td class = "action"> 
@@ -98,6 +107,8 @@ $('#login').submit(function(e){
     .done(function(data){
         localStorage.setItem("token",data)
         showAll()
+        $('#emailLogin').val('')
+        $('#passwordLogin').val('')
     })
     .fail(function(err){
         console.log(err)
@@ -156,6 +167,10 @@ $('#addTodo').submit(function(e){
     .done(function(data){
         $('#addModal').modal('hide')
         showAll()
+        $('#addTodo #title').val('')
+        $('#addTodo #description').val('')
+        $('#addTodo #status').val('')
+        $('#addTodo #duedate').val('')
     })
     .fail(function(err){
         console.log(err)
