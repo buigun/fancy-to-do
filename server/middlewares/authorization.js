@@ -9,7 +9,7 @@ const authorization = function (req,res,next) {
             if (result.UserId === req.user.id) {
                 next()
             } else {
-                res.status(400).json({message: 'access forbidden'})
+                res.status(403).json({message: 'access forbidden'})
             }
         }
     })

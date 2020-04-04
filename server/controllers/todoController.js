@@ -2,7 +2,7 @@ const {Todo} = require('../models')
 
 class ToDoController{
     
-    static createToDo(req,res) {
+    static createToDo(req,res,next) {
         const {title,description,status,due_date} = req.body
         Todo.create({
             title,
@@ -14,24 +14,10 @@ class ToDoController{
         .then(todo=>{
             res.status(201).json({todo})
         })
-        .catch(err=>{
-            if (err.name === 'SequelizeValidationError') {
-                let msgArr = []
-
-                err.errors.forEach(el => {
-                    msgArr.push(el.message)
-                });
-
-                res.status(400).json({
-                    message: msgArr.join(', ')
-                })
-            } else {
-                res.status(500).json(err)
-            }
-        })
+        .catch(next)
     }
 
-    static getToDos(req,res) {
+    static getToDos(req,res,next) {
         Todo.findAll({
             where: {
               UserId: req.user.id
@@ -42,28 +28,18 @@ class ToDoController{
             console.log(todos,'ini todos')
             res.status(200).json({todos})
         })
-        .catch(err=>{
-            res.status(500).json(err)
-        })
+        .catch(next)
     }
 
-    static getTodo(req,res) {
+    static getTodo(req,res,next) {
         Todo.findByPk(req.params.id)
         .then(todo=>{
-            if (todo) {
-                res.status(200).json({todo})
-            } else {
-                res.status(404).json({
-                    message: 'To Do not found'
-                })
-            }
+            res.status(200).json({todo})
         })
-        .catch(err=>{
-            res.status(500).json(err)
-        })
+        .catch(next)
     }
 
-    static updateTodo(req,res) {
+    static updateTodo(req,res,next) {
         const {title,description,status,due_date} = req.body
         Todo.update({
             title,
@@ -73,53 +49,24 @@ class ToDoController{
             UserId: req.user.id
         },{where: {id: req.params.id}})
         .then(todo=>{
-            if (todo) {
-                return Todo.findByPk(req.params.id)
-            } else {
-                res.status(404).json({
-                    message: 'To Do not found'
-                })
-            }
+            return Todo.findByPk(req.params.id)
         })
         .then(hasil=>{
             res.status(200).json({hasil})
         })
-        .catch(err=>{
-            if (err.name === 'SequelizeValidationError') {
-                let msgArr = []
-
-                err.errors.forEach(el => {
-                    msgArr.push(el.message)
-                });
-
-                res.status(400).json({
-                    message: msgArr.join(', ')
-                })
-            } else {
-                res.status(500).json(err)
-            }
-        })
+        .catch(next)
     }
 
-    static destroyTodo(req,res) {
-        // Promise.all([Todo.findByPk(req.params.id),Todo.destroy({where: {id: req.params.id}})])
+    static destroyTodo(req,res,next) {
         Todo.findByPk(req.params.id)
         .then(deleted=>{
-            if(deleted) {
-                res.status(200).json({deleted})
-                return Todo.destroy({where: {id: deleted.id}})
-            } else {
-                res.status(404).json({
-                    message: 'To Do not found'
-                })
-            }
+            res.status(200).json({deleted})
+            return Todo.destroy({where: {id: deleted.id}})
         })
         .then(result=>{
             res.status(200).json({message:'todo deleted'})
         })
-        .catch(err=>{
-            res.status(500).json(err)
-        })
+        .catch(next)
     }
 }
 
